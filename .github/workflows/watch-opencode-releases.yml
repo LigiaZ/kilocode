@@ -46,17 +46,6 @@ jobs:
           fi
 
       - if: steps.fetch.outputs.tag != '' && steps.cache.outputs.cache-hit != 'true'
-        name: Notify Slack
-        uses: slackapi/slack-github-action@v2.0.0
-        with:
-          webhook: ${{ secrets.OPENCODE_WATCH_SLACK_WEBHOOK }}
-          webhook-type: incoming-webhook
-          payload: |
-            name: "${{ steps.fetch.outputs.name }}"
-            tag: "${{ steps.fetch.outputs.tag }}"
-            url: "${{ steps.fetch.outputs.url }}"
-
-      - if: steps.fetch.outputs.tag != '' && steps.cache.outputs.cache-hit != 'true'
         name: Mark tag as seen
         run: mkdir -p .cache/last-seen && echo "${{ steps.fetch.outputs.tag }}" > .cache/last-seen/tag.txt
 
